@@ -244,7 +244,7 @@ func resourceRegistrySchema(readOnly bool) map[string]*schema.Schema {
 		},
 	}
 
-	helpers.SetMultiLevelDatasourceSchemaWithoutCommonFields(mainSchema)
+	helpers.SetMultiLevelResourceSchema(mainSchema)
 	// common schema requires name, not needed here
 	delete(mainSchema, "name")
 
