@@ -9,7 +9,7 @@ import (
 )
 
 // Virtual Docker Registry
-func TestAccResourceVirtualDockerRegistry(t *testing.T) {
+func TestAccResourceVirtualDockerRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_virtual_docker_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -23,7 +23,7 @@ func TestAccResourceVirtualDockerRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testAccResourceVirtualDockerRegistry(id, accountId),
+				Config: testAccResourceVirtualDockerRegistryLegacyPath(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -31,7 +31,7 @@ func TestAccResourceVirtualDockerRegistry(t *testing.T) {
 		},
 	})
 }
-func TestOrgResourceVirtualDockerRegistry(t *testing.T) {
+func TestOrgResourceVirtualDockerRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_virtual_docker_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -45,7 +45,7 @@ func TestOrgResourceVirtualDockerRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testOrgResourceVirtualDockerRegistry(id, accountId),
+				Config: testOrgResourceVirtualDockerRegistryLegacyPath(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -53,7 +53,7 @@ func TestOrgResourceVirtualDockerRegistry(t *testing.T) {
 		},
 	})
 }
-func TestProjectResourceVirtualDockerRegistry(t *testing.T) {
+func TestProjectResourceVirtualDockerRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_virtual_docker_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -67,7 +67,7 @@ func TestProjectResourceVirtualDockerRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testProjResourceVirtualDockerRegistry(id, accountId),
+				Config: testProjResourceVirtualDockerRegistryLegacyPath(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -77,7 +77,7 @@ func TestProjectResourceVirtualDockerRegistry(t *testing.T) {
 }
 
 // Upstream Docker Registry --- UserPassword
-func TestAccResourceUpstreamDockerRegistry(t *testing.T) {
+func TestAccResourceUpstreamDockerRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_upstream_docker_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -91,7 +91,7 @@ func TestAccResourceUpstreamDockerRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testAccResourceUpstreamDockerRegistry(id, accountId),
+				Config: testAccResourceUpstreamDockerRegistryLegacyPath(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -99,7 +99,7 @@ func TestAccResourceUpstreamDockerRegistry(t *testing.T) {
 		},
 	})
 }
-func TestOrgResourceUpstreamDockerRegistry(t *testing.T) {
+func TestOrgResourceUpstreamDockerRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_upstream_docker_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -113,7 +113,7 @@ func TestOrgResourceUpstreamDockerRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testOrgResourceUpstreamDockerRegistry(id, accountId),
+				Config: testOrgResourceUpstreamDockerRegistryLegacyPath(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -121,7 +121,7 @@ func TestOrgResourceUpstreamDockerRegistry(t *testing.T) {
 		},
 	})
 }
-func TestProjectResourceUpstreamDockerRegistry(t *testing.T) {
+func TestProjectResourceUpstreamDockerRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_upstream_docker_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -135,7 +135,7 @@ func TestProjectResourceUpstreamDockerRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testProjResourceUpstreamDockerRegistry(id, accountId),
+				Config: testProjResourceUpstreamDockerRegistryLegacyPath(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -144,11 +144,12 @@ func TestProjectResourceUpstreamDockerRegistry(t *testing.T) {
 	})
 }
 
-func testAccResourceVirtualDockerRegistry(id string, accId string) string {
+func testAccResourceVirtualDockerRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
+   space_ref    = "%[2]s"
    package_type = "DOCKER"
 
    config {
@@ -159,7 +160,7 @@ func testAccResourceVirtualDockerRegistry(id string, accId string) string {
 `, id, accId)
 }
 
-func testOrgResourceVirtualDockerRegistry(id string, accId string) string {
+func testOrgResourceVirtualDockerRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -168,7 +169,7 @@ func testOrgResourceVirtualDockerRegistry(id string, accId string) string {
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   org_id    = harness_platform_organization.test.identifier
+   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}"
    package_type = "DOCKER"
 
    config {
@@ -179,7 +180,7 @@ func testOrgResourceVirtualDockerRegistry(id string, accId string) string {
 `, id, accId)
 }
 
-func testProjResourceVirtualDockerRegistry(id string, accId string) string {
+func testProjResourceVirtualDockerRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -194,8 +195,7 @@ func testProjResourceVirtualDockerRegistry(id string, accId string) string {
  }
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   org_id    = harness_platform_organization.test.identifier
-   project_id = harness_platform_project.test.identifier
+   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
    package_type = "DOCKER"
 
    config {
@@ -206,10 +206,11 @@ func testProjResourceVirtualDockerRegistry(id string, accId string) string {
 `, id, accId)
 }
 
-func testAccResourceUpstreamDockerRegistry(id string, accId string) string {
+func testAccResourceUpstreamDockerRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
+   space_ref    = "%[2]s"
    package_type = "DOCKER"
 
    config {
@@ -228,7 +229,7 @@ func testAccResourceUpstreamDockerRegistry(id string, accId string) string {
 `, id, accId)
 }
 
-func testOrgResourceUpstreamDockerRegistry(id string, accId string) string {
+func testOrgResourceUpstreamDockerRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -237,7 +238,7 @@ func testOrgResourceUpstreamDockerRegistry(id string, accId string) string {
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   org_id    = harness_platform_organization.test.identifier
+   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}"
    package_type = "DOCKER"
 
    config {
@@ -256,7 +257,7 @@ func testOrgResourceUpstreamDockerRegistry(id string, accId string) string {
 `, id, accId)
 }
 
-func testProjResourceUpstreamDockerRegistry(id string, accId string) string {
+func testProjResourceUpstreamDockerRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -271,8 +272,7 @@ func testProjResourceUpstreamDockerRegistry(id string, accId string) string {
  }
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   org_id    = harness_platform_organization.test.identifier
-   project_id = harness_platform_project.test.identifier
+   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
    package_type = "DOCKER"
 
    config {
@@ -292,7 +292,7 @@ func testProjResourceUpstreamDockerRegistry(id string, accId string) string {
 }
 
 // Virtual Helm Registry
-func TestAccResourceVirtualHelmRegistry(t *testing.T) {
+func TestAccResourceVirtualHelmRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_virtual_helm_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -306,7 +306,7 @@ func TestAccResourceVirtualHelmRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testAccResourceVirtualHelmRegistry(id, accountId),
+				Config: testAccResourceVirtualHelmRegistryLegacyPath(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -314,7 +314,7 @@ func TestAccResourceVirtualHelmRegistry(t *testing.T) {
 		},
 	})
 }
-func TestOrgResourceVirtualHelmRegistry(t *testing.T) {
+func TestOrgResourceVirtualHelmRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_virtual_helm_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -328,7 +328,7 @@ func TestOrgResourceVirtualHelmRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testOrgResourceVirtualHelmRegistry(id, accountId),
+				Config: testOrgResourceVirtualHelmRegistryLegacyPath(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -336,7 +336,7 @@ func TestOrgResourceVirtualHelmRegistry(t *testing.T) {
 		},
 	})
 }
-func TestProjectResourceVirtualHelmRegistry(t *testing.T) {
+func TestProjectResourceVirtualHelmRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_virtual_helm_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -350,7 +350,7 @@ func TestProjectResourceVirtualHelmRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testProjResourceVirtualHelmRegistry(id, accountId),
+				Config: testProjResourceVirtualHelmRegistryLegacyPath(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -360,7 +360,7 @@ func TestProjectResourceVirtualHelmRegistry(t *testing.T) {
 }
 
 // Upstream Helm Registry --- UserPass
-func TestAccResourceUpstreamHelmRegistry(t *testing.T) {
+func TestAccResourceUpstreamHelmRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_upstream_helm_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -374,7 +374,7 @@ func TestAccResourceUpstreamHelmRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testAccResourceUpstreamHelmRegistry(id, accountId),
+				Config: testAccResourceUpstreamHelmRegistryLegacyPath(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -382,7 +382,7 @@ func TestAccResourceUpstreamHelmRegistry(t *testing.T) {
 		},
 	})
 }
-func TestOrgResourceUpstreamHelmRegistry(t *testing.T) {
+func TestOrgResourceUpstreamHelmRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_upstream_helm_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -396,7 +396,7 @@ func TestOrgResourceUpstreamHelmRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testOrgResourceUpstreamHelmRegistry(id, accountId),
+				Config: testOrgResourceUpstreamHelmRegistryLegacyPath(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -404,7 +404,7 @@ func TestOrgResourceUpstreamHelmRegistry(t *testing.T) {
 		},
 	})
 }
-func TestProjectResourceUpstreamHelmRegistry(t *testing.T) {
+func TestProjectResourceUpstreamHelmRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_upstream_helm_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -418,7 +418,7 @@ func TestProjectResourceUpstreamHelmRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testProjResourceUpstreamHelmRegistry(id, accountId),
+				Config: testProjResourceUpstreamHelmRegistryLegacyPath(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -427,11 +427,12 @@ func TestProjectResourceUpstreamHelmRegistry(t *testing.T) {
 	})
 }
 
-func testAccResourceVirtualHelmRegistry(id string, accId string) string {
+func testAccResourceVirtualHelmRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
+   space_ref    = "%[2]s"
    package_type = "HELM"
 
    config {
@@ -442,7 +443,7 @@ func testAccResourceVirtualHelmRegistry(id string, accId string) string {
 `, id, accId)
 }
 
-func testOrgResourceVirtualHelmRegistry(id string, accId string) string {
+func testOrgResourceVirtualHelmRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -451,7 +452,7 @@ func testOrgResourceVirtualHelmRegistry(id string, accId string) string {
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   org_id    = harness_platform_organization.test.identifier
+   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}"
    package_type = "HELM"
 
    config {
@@ -462,7 +463,7 @@ func testOrgResourceVirtualHelmRegistry(id string, accId string) string {
 `, id, accId)
 }
 
-func testProjResourceVirtualHelmRegistry(id string, accId string) string {
+func testProjResourceVirtualHelmRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -477,8 +478,7 @@ func testProjResourceVirtualHelmRegistry(id string, accId string) string {
  }
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   org_id    = harness_platform_organization.test.identifier
-   project_id = harness_platform_project.test.identifier
+   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
    package_type = "HELM"
 
    config {
@@ -489,10 +489,11 @@ func testProjResourceVirtualHelmRegistry(id string, accId string) string {
 `, id, accId)
 }
 
-func testAccResourceUpstreamHelmRegistry(id string, accId string) string {
+func testAccResourceUpstreamHelmRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
+   space_ref    = "%[2]s"
    package_type = "HELM"
 
    config {
@@ -512,7 +513,7 @@ func testAccResourceUpstreamHelmRegistry(id string, accId string) string {
 `, id, accId)
 }
 
-func testOrgResourceUpstreamHelmRegistry(id string, accId string) string {
+func testOrgResourceUpstreamHelmRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -521,7 +522,7 @@ func testOrgResourceUpstreamHelmRegistry(id string, accId string) string {
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   org_id    = harness_platform_organization.test.identifier
+   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}"
    package_type = "HELM"
 
    config {
@@ -541,7 +542,7 @@ func testOrgResourceUpstreamHelmRegistry(id string, accId string) string {
 `, id, accId)
 }
 
-func testProjResourceUpstreamHelmRegistry(id string, accId string) string {
+func testProjResourceUpstreamHelmRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -556,8 +557,7 @@ func testProjResourceUpstreamHelmRegistry(id string, accId string) string {
  }
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   org_id    = harness_platform_organization.test.identifier
-   project_id = harness_platform_project.test.identifier
+   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
    package_type = "HELM"
 
    config {
@@ -578,7 +578,7 @@ func testProjResourceUpstreamHelmRegistry(id string, accId string) string {
 }
 
 // Upstream Docker Registry --- Anonymous
-func TestAccResourceUpstreamDockerAnonymousRegistry(t *testing.T) {
+func TestAccResourceUpstreamDockerAnonymousRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_upstream_docker_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -601,7 +601,7 @@ func TestAccResourceUpstreamDockerAnonymousRegistry(t *testing.T) {
 		},
 	})
 }
-func TestOrgResourceUpstreamDockerAnonymousRegistry(t *testing.T) {
+func TestOrgResourceUpstreamDockerAnonymousRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_upstream_docker_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -624,7 +624,7 @@ func TestOrgResourceUpstreamDockerAnonymousRegistry(t *testing.T) {
 		},
 	})
 }
-func TestProjectResourceUpstreamDockerAnonymousRegistry(t *testing.T) {
+func TestProjectResourceUpstreamDockerAnonymousRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_upstream_docker_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -648,10 +648,11 @@ func TestProjectResourceUpstreamDockerAnonymousRegistry(t *testing.T) {
 	})
 }
 
-func testAccResourceUpstreamDockerAnonymousRegistry(id string, accId string) string {
+func testAccResourceUpstreamDockerAnonymousRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
+   space_ref    = "%[2]s"
    package_type = "DOCKER"
 
    config {
@@ -667,7 +668,7 @@ func testAccResourceUpstreamDockerAnonymousRegistry(id string, accId string) str
 `, id, accId)
 }
 
-func testOrgResourceUpstreamDockerAnonymousRegistry(id string, accId string) string {
+func testOrgResourceUpstreamDockerAnonymousRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -676,7 +677,7 @@ func testOrgResourceUpstreamDockerAnonymousRegistry(id string, accId string) str
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   org_id    = harness_platform_organization.test.identifier
+   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}"
    package_type = "DOCKER"
 
    config {
@@ -692,7 +693,7 @@ func testOrgResourceUpstreamDockerAnonymousRegistry(id string, accId string) str
 `, id, accId)
 }
 
-func testProjResourceUpstreamDockerAnonymousRegistry(id string, accId string) string {
+func testProjResourceUpstreamDockerAnonymousRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -707,8 +708,7 @@ func testProjResourceUpstreamDockerAnonymousRegistry(id string, accId string) st
  }
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   org_id    = harness_platform_organization.test.identifier
-   project_id = harness_platform_project.test.identifier
+   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
    package_type = "DOCKER"
 
    config {
@@ -725,7 +725,7 @@ func testProjResourceUpstreamDockerAnonymousRegistry(id string, accId string) st
 }
 
 // Upstream Helm Registry --- Anonymous
-func TestAccResourceUpstreamHelmAnonymousRegistry(t *testing.T) {
+func TestAccResourceUpstreamHelmAnonymousRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_upstream_helm_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -748,7 +748,7 @@ func TestAccResourceUpstreamHelmAnonymousRegistry(t *testing.T) {
 		},
 	})
 }
-func TestOrgResourceUpstreamHelmAnonymousRegistry(t *testing.T) {
+func TestOrgResourceUpstreamHelmAnonymousRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_upstream_helm_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -771,7 +771,7 @@ func TestOrgResourceUpstreamHelmAnonymousRegistry(t *testing.T) {
 		},
 	})
 }
-func TestProjectResourceUpstreamHelmAnonymousRegistry(t *testing.T) {
+func TestProjectResourceUpstreamHelmAnonymousRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_upstream_helm_registry")
 	resourceName := "harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -795,10 +795,11 @@ func TestProjectResourceUpstreamHelmAnonymousRegistry(t *testing.T) {
 	})
 }
 
-func testAccResourceUpstreamHelmAnonymousRegistry(id string, accId string) string {
+func testAccResourceUpstreamHelmAnonymousRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
+   space_ref    = "%[2]s"
    package_type = "HELM"
 
    config {
@@ -815,7 +816,7 @@ func testAccResourceUpstreamHelmAnonymousRegistry(id string, accId string) strin
 `, id, accId)
 }
 
-func testOrgResourceUpstreamHelmAnonymousRegistry(id string, accId string) string {
+func testOrgResourceUpstreamHelmAnonymousRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -824,7 +825,7 @@ func testOrgResourceUpstreamHelmAnonymousRegistry(id string, accId string) strin
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   org_id    = harness_platform_organization.test.identifier
+   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}"
    package_type = "HELM"
 
    config {
@@ -841,7 +842,7 @@ func testOrgResourceUpstreamHelmAnonymousRegistry(id string, accId string) strin
 `, id, accId)
 }
 
-func testProjResourceUpstreamHelmAnonymousRegistry(id string, accId string) string {
+func testProjResourceUpstreamHelmAnonymousRegistryLegacyPath(id string, accId string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -856,8 +857,7 @@ func testProjResourceUpstreamHelmAnonymousRegistry(id string, accId string) stri
  }
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   org_id    = harness_platform_organization.test.identifier
-   project_id = harness_platform_project.test.identifier
+   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
    package_type = "HELM"
 
    config {

@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestAccDataSourceVirtualRegistry(t *testing.T) {
+func TestAccDataSourceVirtualRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_virtual_registry")
 	resourceName := "data.harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -22,7 +22,7 @@ func TestAccDataSourceVirtualRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testAccDataSourceVirtualRegistry(id, accountId),
+				Config: testAccDataSourceVirtualRegistryLegacySpaceRef(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -31,7 +31,7 @@ func TestAccDataSourceVirtualRegistry(t *testing.T) {
 	})
 }
 
-func TestAccDataSourceUpstreamAWSRegistry(t *testing.T) {
+func TestAccDataSourceUpstreamAWSRegistryLegacyPath(t *testing.T) {
 	id := fmt.Sprintf("tf_auto_virtual_registry")
 	resourceName := "data.harness_platform_har_registry.test"
 	accountId := os.Getenv("HARNESS_ACCOUNT_ID")
@@ -45,7 +45,7 @@ func TestAccDataSourceUpstreamAWSRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testAccDataSourceUpstreamAWSRegistry(id, accountId),
+				Config: testAccDataSourceUpstreamAWSRegistryLegacySpaceRef(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -62,7 +62,7 @@ func TestAccDataSourceUpstreamAWSRegistry(t *testing.T) {
 					acctest.TestAccConfigureProvider()
 					_, _ = acctest.TestAccGetHarClientWithContext()
 				},
-				Config: testAccDataSourceUpstreamAWSRegistry2(id, accountId),
+				Config: testAccDataSourceUpstreamAWSRegistry2LegacySpaceRef(id, accountId),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "identifier", id),
 				),
@@ -71,11 +71,12 @@ func TestAccDataSourceUpstreamAWSRegistry(t *testing.T) {
 	})
 }
 
-func testAccDataSourceVirtualRegistry(id string, accId string) string {
+func testAccDataSourceVirtualRegistryLegacySpaceRef(id string, accId string) string {
 	return fmt.Sprintf(`
 
 	 resource "harness_platform_har_registry" "test" {
 	   identifier   = "%[1]s"
+	   space_ref    = "%[2]s"
 	   package_type = "NPM"
 	
 	   config {
@@ -91,11 +92,12 @@ func testAccDataSourceVirtualRegistry(id string, accId string) string {
 `, id, accId)
 }
 
-func testAccDataSourceUpstreamAWSRegistry(id string, accId string) string {
+func testAccDataSourceUpstreamAWSRegistryLegacySpaceRef(id string, accId string) string {
 	return fmt.Sprintf(`
 
 	 resource "harness_platform_har_registry" "test" {
 	   identifier   = "%[1]s"
+	   space_ref    = "%[2]s"
 	   package_type = "DOCKER"
 	
 	   config {
@@ -121,11 +123,12 @@ func testAccDataSourceUpstreamAWSRegistry(id string, accId string) string {
 `, id, accId)
 }
 
-func testAccDataSourceUpstreamAWSRegistry2(id string, accId string) string {
+func testAccDataSourceUpstreamAWSRegistry2LegacySpaceRef(id string, accId string) string {
 	return fmt.Sprintf(`
 
 	 resource "harness_platform_har_registry" "test" {
 	   identifier   = "%[1]s"
+	   space_ref    = "%[2]s"
 	   package_type = "DOCKER"
 	
 	   config {

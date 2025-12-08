@@ -1,35 +1,30 @@
 package registry
 
 import (
+	"github.com/harness/harness-go-sdk/harness/har"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"strings"
 )
 
-func getParentRef(accountID, orgID, projectID string, parentRef string) string {
-	if parentRef != "" {
-		return parentRef
-	}
-	return getRef(accountID, orgID, projectID)
-}
-
-func getRef(params ...string) string {
-	var result []string
-	for _, param := range params {
-		if param == "" {
-			break
+// the origional implamentation took two differnet but idential parameters, parent_ref and space_ref
+// this function will use the origional parameters if they are given, otherwise build it using the standard 
+// org_id and project_id parameters found in other standard multi-hierarchy resources
+func buildHARPathRef(d *schema.ResourceData, c *har.APIClient) (parentRef string) {
+	if attr, ok := d.GetOk("parent_ref"); ok {
+		parentRef = attr.(string)
+	} else {
+		if attr, ok := d.GetOk("space_ref"); ok {
+			parentRef = attr.(string)
+		} else {
+			result := []string{c.AccountId}
+			if org_id, ok := d.GetOk("org_id"); ok {
+				result = append(result, org_id.(string))
+			}
+			if project_id, ok := d.GetOk("project_id"); ok {
+				result = append(result, project_id.(string))
+			}
+			parentRef = strings.Join(result, "/")
 		}
-		result = append(result, param)
 	}
-	return strings.Join(result, "/")
-}
-
-func expandStringSet(s *schema.Set) []string {
-	if s == nil {
-		return nil
-	}
-	out := make([]string, 0, s.Len())
-	for _, v := range s.List() {
-		out = append(out, v.(string))
-	}
-	return out
+	return
 }

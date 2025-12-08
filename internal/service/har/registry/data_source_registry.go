@@ -30,7 +30,7 @@ func dataSourceRegistryRead(ctx context.Context, d *schema.ResourceData, meta in
 	var httpResp *http.Response
 
 	id := d.Get("identifier").(string)
-	registryRef := d.Get("space_ref").(string) + "/" + id
+	registryRef := buildHARPathRef(d, c) + "/" + id
 
 	if id != "" && registryRef != "" {
 		resp, httpResp, err = c.RegistriesApi.GetRegistry(ctx, registryRef)
@@ -40,7 +40,7 @@ func dataSourceRegistryRead(ctx context.Context, d *schema.ResourceData, meta in
 
 		registry = resp.Data
 	} else {
-		return diag.Errorf("Registry identifier and Space reference are required to read the registry.")
+		return diag.Errorf("Registry identifier and hierarchy are required to read the registry.")
 	}
 
 	if registry.Identifier == "" {

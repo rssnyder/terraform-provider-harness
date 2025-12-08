@@ -8,30 +8,30 @@ terraform {
 
 # Secret Variables
 variable "github_token_value" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 variable "harness_automation_github_token" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 # Data sources with try() function to safely handle non-existent resources
 locals {
-  spot_account_id_exists                  = try(data.harness_platform_secret_text.existing_spot_account_id.id, null) != null
-  spot_api_token_exists                   = try(data.harness_platform_secret_text.existing_spot_api_token.id, null) != null
-  spot_api_token_ref_exists               = try(data.harness_platform_secret_text.existing_spot_api_token_ref.id, null) != null
-  nexus_password_exists                   = try(data.harness_platform_secret_text.existing_nexus_password.id, null) != null
-  git_bot_token_exists                    = try(data.harness_platform_secret_text.existing_git_bot_token.id, null) != null
-  harness_automation_github_token_exists  = try(data.harness_platform_secret_text.existing_harness_automation_github_token.id, null) != null
-  
-  gitx_connector_exists                    = try(data.harness_platform_connector_github.existing_gitx_connector.id, null) != null
-  open_repo_connector_exists               = try(data.harness_platform_connector_github.existing_open_repo_connector.id, null) != null
-  jajoo_connector_exists                   = try(data.harness_platform_connector_github.existing_jajoo_connector.id, null) != null
-  terraform_resource_connector_exists      = try(data.harness_platform_connector_github.existing_terraform_resource_connector.id, null) != null
-  account_level_delegate_connector_exists  = try(data.harness_platform_connector_github.existing_account_level_delegate_connector.id, null) != null
-  account_level_connector_exists           = try(data.harness_platform_connector_github.existing_account_level_connector.id, null) != null
+  spot_account_id_exists                 = try(data.harness_platform_secret_text.existing_spot_account_id.id, null) != null
+  spot_api_token_exists                  = try(data.harness_platform_secret_text.existing_spot_api_token.id, null) != null
+  spot_api_token_ref_exists              = try(data.harness_platform_secret_text.existing_spot_api_token_ref.id, null) != null
+  nexus_password_exists                  = try(data.harness_platform_secret_text.existing_nexus_password.id, null) != null
+  git_bot_token_exists                   = try(data.harness_platform_secret_text.existing_git_bot_token.id, null) != null
+  harness_automation_github_token_exists = try(data.harness_platform_secret_text.existing_harness_automation_github_token.id, null) != null
+
+  gitx_connector_exists                   = try(data.harness_platform_connector_github.existing_gitx_connector.id, null) != null
+  open_repo_connector_exists              = try(data.harness_platform_connector_github.existing_open_repo_connector.id, null) != null
+  jajoo_connector_exists                  = try(data.harness_platform_connector_github.existing_jajoo_connector.id, null) != null
+  terraform_resource_connector_exists     = try(data.harness_platform_connector_github.existing_terraform_resource_connector.id, null) != null
+  account_level_delegate_connector_exists = try(data.harness_platform_connector_github.existing_account_level_delegate_connector.id, null) != null
+  account_level_connector_exists          = try(data.harness_platform_connector_github.existing_account_level_connector.id, null) != null
 }
 
 # Data sources to check if resources exist
@@ -106,7 +106,7 @@ resource "harness_platform_secret_text" "TF_spot_api_token_ref" {
   value                     = "my_secret_value"
 
   lifecycle {
-      ignore_changes = [identifier]
+    ignore_changes = [identifier]
   }
 }
 
@@ -121,7 +121,7 @@ resource "harness_platform_secret_text" "TF_Nexus_Password" {
   value                     = "my_secret_value"
 
   lifecycle {
-      ignore_changes = [identifier]
+    ignore_changes = [identifier]
   }
 }
 
@@ -136,7 +136,7 @@ resource "harness_platform_secret_text" "TF_git_bot_token" {
   value                     = var.github_token_value
 
   lifecycle {
-      ignore_changes = [identifier]
+    ignore_changes = [identifier]
   }
 }
 
@@ -151,7 +151,7 @@ resource "harness_platform_secret_text" "TF_harness_automation_github_token" {
   value                     = var.harness_automation_github_token
 
   lifecycle {
-      ignore_changes = [identifier]
+    ignore_changes = [identifier]
   }
 }
 
@@ -245,13 +245,13 @@ resource "harness_platform_connector_github" "TF_open_repo_github_connector" {
 resource "harness_platform_connector_github" "TF_Jajoo_github_connector" {
   count = !local.jajoo_connector_exists && local.harness_automation_github_token_exists ? 1 : 0
 
-  identifier          = "TF_Jajoo_github_connector"
-  name                = "TF_Jajoo_github_connector"
-  description         = "TF_Jajoo_github_connector"
-  tags                = ["ritek:test"]
-  url                 = "https://github.com/harness-automation"
-  connection_type     = "Account"
-  validation_repo     = "jajoo_git.git"
+  identifier      = "TF_Jajoo_github_connector"
+  name            = "TF_Jajoo_github_connector"
+  description     = "TF_Jajoo_github_connector"
+  tags            = ["ritek:test"]
+  url             = "https://github.com/harness-automation"
+  connection_type = "Account"
+  validation_repo = "jajoo_git.git"
 
   credentials {
     http {
@@ -300,13 +300,13 @@ resource "harness_platform_connector_github" "TF_TerraformResource_git_connector
 resource "harness_platform_connector_github" "TF_github_account_level_delegate_connector" {
   count = !local.account_level_delegate_connector_exists && local.harness_automation_github_token_exists ? 1 : 0
 
-  identifier          = "TF_github_account_level_delegate_connector"
-  name                = "TF_github_account_level_delegate_connector"
-  description         = "TF_github_account_level_delegate_connector"
-  tags                = ["ritek:test"]
-  url                 = "https://github.com/harness-automation"
-  connection_type     = "Account"
-  validation_repo     = "Gitx-automation"
+  identifier      = "TF_github_account_level_delegate_connector"
+  name            = "TF_github_account_level_delegate_connector"
+  description     = "TF_github_account_level_delegate_connector"
+  tags            = ["ritek:test"]
+  url             = "https://github.com/harness-automation"
+  connection_type = "Account"
+  validation_repo = "Gitx-automation"
 
   credentials {
     http {

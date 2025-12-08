@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/harness/harness-go-sdk/harness/har"
+	"github.com/harness/terraform-provider-harness/helpers"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"regexp"
@@ -26,11 +27,13 @@ func resourceRegistrySchema(readOnly bool) map[string]*schema.Schema {
 			Description: "Parent reference for the registry",
 			Type:        schema.TypeString,
 			Optional:    true,
+			Computed:    true,
 		},
 		"space_ref": {
 			Description: "Space reference for the registry",
 			Type:        schema.TypeString,
 			Optional:    true,
+			Computed:    true,
 		},
 		"config": {
 			Description: "Configuration for the registry",
@@ -241,6 +244,10 @@ func resourceRegistrySchema(readOnly bool) map[string]*schema.Schema {
 		},
 	}
 
+	helpers.SetMultiLevelDatasourceSchemaWithoutCommonFields(mainSchema)
+	// common schema requires name, not needed here
+	delete(mainSchema, "name")
+
 	if readOnly {
 		mainSchema["package_type"] = &schema.Schema{
 			Description: "Type of package (DOCKER, HELM, MAVEN, etc.)",
@@ -266,7 +273,7 @@ func getUpstreamRegistrySchema() *schema.Resource {
 	urlRe := regexp.MustCompile(`^https?://`)
 	urlValidator := validation.StringMatch(urlRe, "URL must start with http:// or https://")
 
-	return &schema.Resource{
+	mainSchema := &schema.Resource{
 		Schema: map[string]*schema.Schema{
 			"source": {
 				Type:        schema.TypeString,
@@ -363,6 +370,12 @@ func getUpstreamRegistrySchema() *schema.Resource {
 			},
 		},
 	}
+
+	helpers.SetMultiLevelResourceSchema(mainSchema.Schema)
+	// common schema requires name, not needed here
+	delete(mainSchema.Schema, "name")
+
+	return mainSchema
 }
 
 func trimSlash(s string) string {
