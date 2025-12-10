@@ -71,33 +71,29 @@ func TestAccDataSourceUpstreamAWSRegistry(t *testing.T) {
 	})
 }
 
-func testAccDataSourceVirtualRegistry(id string, accId string) string {
+func testAccDataSourceVirtualRegistry(id string) string {
 	return fmt.Sprintf(`
 
 	 resource "harness_platform_har_registry" "test" {
 	   identifier   = "%[1]s"
-	   space_ref    = "%[2]s"
 	   package_type = "NPM"
 	
 	   config {
 		type = "VIRTUAL"
 	   }
-	   parent_ref = "%[2]s"
 	 }
 
 	data "harness_platform_har_registry" "test" {
 			identifier = harness_platform_har_registry.test.identifier
-			space_ref = "%[2]s"
 	}
-`, id, accId)
+`, id)
 }
 
-func testAccDataSourceUpstreamAWSRegistry(id string, accId string) string {
+func testAccDataSourceUpstreamAWSRegistry(id string) string {
 	return fmt.Sprintf(`
 
 	 resource "harness_platform_har_registry" "test" {
 	   identifier   = "%[1]s"
-	   space_ref    = "%[2]s"
 	   package_type = "DOCKER"
 	
 	   config {
@@ -113,22 +109,19 @@ func testAccDataSourceUpstreamAWSRegistry(id string, accId string) string {
 			secret_key_secret_path = "%[2]s"
 		}
        }
-	   parent_ref = "%[2]s"
 	 }
 
 	data "harness_platform_har_registry" "test" {
 			identifier = harness_platform_har_registry.test.identifier
-			space_ref = "%[2]s"
 	}
-`, id, accId)
+`, id)
 }
 
-func testAccDataSourceUpstreamAWSRegistry2(id string, accId string) string {
+func testAccDataSourceUpstreamAWSRegistry2(id string) string {
 	return fmt.Sprintf(`
 
 	 resource "harness_platform_har_registry" "test" {
 	   identifier   = "%[1]s"
-	   space_ref    = "%[2]s"
 	   package_type = "DOCKER"
 	
 	   config {
@@ -143,12 +136,10 @@ func testAccDataSourceUpstreamAWSRegistry2(id string, accId string) string {
 			secret_key_secret_path = "%[2]s"
 		}
        }
-	   parent_ref = "%[2]s"
 	 }
 
 	data "harness_platform_har_registry" "test" {
 			identifier = harness_platform_har_registry.test.identifier
-			space_ref = "%[2]s"
 	}
-`, id, accId)
+`, id)
 }

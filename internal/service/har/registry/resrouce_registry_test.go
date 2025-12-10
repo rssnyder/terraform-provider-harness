@@ -144,23 +144,21 @@ func TestProjectResourceUpstreamDockerRegistry(t *testing.T) {
 	})
 }
 
-func testAccResourceVirtualDockerRegistry(id string, accId string) string {
+func testAccResourceVirtualDockerRegistry(id string) string {
 	return fmt.Sprintf(`
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s"
    package_type = "DOCKER"
 
    config {
     type = "VIRTUAL"
    }
-   parent_ref = "%[2]s"
  }
-`, id, accId)
+`, id)
 }
 
-func testOrgResourceVirtualDockerRegistry(id string, accId string) string {
+func testOrgResourceVirtualDockerRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -169,18 +167,17 @@ func testOrgResourceVirtualDockerRegistry(id string, accId string) string {
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}"
+   org_id    = harness_platform_organization.test.identifier
    package_type = "DOCKER"
 
    config {
     type = "VIRTUAL"
    }
-   parent_ref = "%[2]s/${harness_platform_organization.test.identifier}"
  }
-`, id, accId)
+`, id)
 }
 
-func testProjResourceVirtualDockerRegistry(id string, accId string) string {
+func testProjResourceVirtualDockerRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -195,22 +192,21 @@ func testProjResourceVirtualDockerRegistry(id string, accId string) string {
  }
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
+   org_id    = harness_platform_organization.test.identifier
+   project_id    = harness_platform_project.test.identifier
    package_type = "DOCKER"
 
    config {
     type = "VIRTUAL"
    }
-   parent_ref = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
  }
-`, id, accId)
+`, id)
 }
 
-func testAccResourceUpstreamDockerRegistry(id string, accId string) string {
+func testAccResourceUpstreamDockerRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s"
    package_type = "DOCKER"
 
    config {
@@ -224,12 +220,11 @@ func testAccResourceUpstreamDockerRegistry(id string, accId string) string {
 			secret_space_path = "%[2]s"
 		}
    }
-   parent_ref = "%[2]s"
  }
-`, id, accId)
+`, id)
 }
 
-func testOrgResourceUpstreamDockerRegistry(id string, accId string) string {
+func testOrgResourceUpstreamDockerRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -238,7 +233,7 @@ func testOrgResourceUpstreamDockerRegistry(id string, accId string) string {
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}"
+   org_id    = harness_platform_organization.test.identifier
    package_type = "DOCKER"
 
    config {
@@ -252,12 +247,11 @@ func testOrgResourceUpstreamDockerRegistry(id string, accId string) string {
 			secret_space_path = "%[2]s"
 		}
    }
-   parent_ref = "%[2]s/${harness_platform_organization.test.identifier}"
  }
-`, id, accId)
+`, id)
 }
 
-func testProjResourceUpstreamDockerRegistry(id string, accId string) string {
+func testProjResourceUpstreamDockerRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -272,7 +266,8 @@ func testProjResourceUpstreamDockerRegistry(id string, accId string) string {
  }
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
+   org_id    = harness_platform_organization.test.identifier
+   project_id    = harness_platform_project.test.identifier
    package_type = "DOCKER"
 
    config {
@@ -286,9 +281,8 @@ func testProjResourceUpstreamDockerRegistry(id string, accId string) string {
 			secret_space_path = "%[2]s"
 		}
    }
-   parent_ref = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
  }
-`, id, accId)
+`, id)
 }
 
 // Virtual Helm Registry
@@ -427,23 +421,21 @@ func TestProjectResourceUpstreamHelmRegistry(t *testing.T) {
 	})
 }
 
-func testAccResourceVirtualHelmRegistry(id string, accId string) string {
+func testAccResourceVirtualHelmRegistry(id string) string {
 	return fmt.Sprintf(`
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s"
    package_type = "HELM"
 
    config {
     type = "VIRTUAL"
    }
-   parent_ref = "%[2]s"
  }
-`, id, accId)
+`, id)
 }
 
-func testOrgResourceVirtualHelmRegistry(id string, accId string) string {
+func testOrgResourceVirtualHelmRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -452,18 +444,17 @@ func testOrgResourceVirtualHelmRegistry(id string, accId string) string {
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}"
+   org_id    = harness_platform_organization.test.identifier
    package_type = "HELM"
 
    config {
     type = "VIRTUAL"
    }
-   parent_ref = "%[2]s/${harness_platform_organization.test.identifier}"
  }
-`, id, accId)
+`, id)
 }
 
-func testProjResourceVirtualHelmRegistry(id string, accId string) string {
+func testProjResourceVirtualHelmRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -478,22 +469,21 @@ func testProjResourceVirtualHelmRegistry(id string, accId string) string {
  }
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
+   org_id    = harness_platform_organization.test.identifier
+   project_id    = harness_platform_project.test.identifier
    package_type = "HELM"
 
    config {
     type = "VIRTUAL"
    }
-   parent_ref = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
  }
-`, id, accId)
+`, id)
 }
 
-func testAccResourceUpstreamHelmRegistry(id string, accId string) string {
+func testAccResourceUpstreamHelmRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s"
    package_type = "HELM"
 
    config {
@@ -508,12 +498,11 @@ func testAccResourceUpstreamHelmRegistry(id string, accId string) string {
 			secret_space_path = "%[2]s"
 		}
    }
-   parent_ref = "%[2]s"
  }
-`, id, accId)
+`, id)
 }
 
-func testOrgResourceUpstreamHelmRegistry(id string, accId string) string {
+func testOrgResourceUpstreamHelmRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -522,7 +511,7 @@ func testOrgResourceUpstreamHelmRegistry(id string, accId string) string {
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}"
+   org_id    = harness_platform_organization.test.identifier
    package_type = "HELM"
 
    config {
@@ -537,12 +526,11 @@ func testOrgResourceUpstreamHelmRegistry(id string, accId string) string {
 			secret_space_path = "%[2]s"
 		}
    }
-   parent_ref = "%[2]s/${harness_platform_organization.test.identifier}"
  }
-`, id, accId)
+`, id)
 }
 
-func testProjResourceUpstreamHelmRegistry(id string, accId string) string {
+func testProjResourceUpstreamHelmRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -557,7 +545,8 @@ func testProjResourceUpstreamHelmRegistry(id string, accId string) string {
  }
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
+   org_id    = harness_platform_organization.test.identifier
+   project_id    = harness_platform_project.test.identifier
    package_type = "HELM"
 
    config {
@@ -572,9 +561,8 @@ func testProjResourceUpstreamHelmRegistry(id string, accId string) string {
 			secret_space_path = "%[2]s"
 		}
    }
-   parent_ref = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
  }
-`, id, accId)
+`, id)
 }
 
 // Upstream Docker Registry --- Anonymous
@@ -652,7 +640,6 @@ func testAccResourceUpstreamDockerAnonymousRegistry(id string, accId string) str
 	return fmt.Sprintf(`
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s"
    package_type = "DOCKER"
 
    config {
@@ -663,12 +650,11 @@ func testAccResourceUpstreamDockerAnonymousRegistry(id string, accId string) str
 			auth_type = "Anonymous"
 		}
    }
-   parent_ref = "%[2]s"
  }
 `, id, accId)
 }
 
-func testOrgResourceUpstreamDockerAnonymousRegistry(id string, accId string) string {
+func testOrgResourceUpstreamDockerAnonymousRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -677,7 +663,7 @@ func testOrgResourceUpstreamDockerAnonymousRegistry(id string, accId string) str
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}"
+   org_id    = harness_platform_organization.test.identifier
    package_type = "DOCKER"
 
    config {
@@ -688,12 +674,11 @@ func testOrgResourceUpstreamDockerAnonymousRegistry(id string, accId string) str
 			auth_type = "Anonymous"
 		}
    }
-   parent_ref = "%[2]s/${harness_platform_organization.test.identifier}"
  }
-`, id, accId)
+`, id)
 }
 
-func testProjResourceUpstreamDockerAnonymousRegistry(id string, accId string) string {
+func testProjResourceUpstreamDockerAnonymousRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -708,7 +693,8 @@ func testProjResourceUpstreamDockerAnonymousRegistry(id string, accId string) st
  }
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
+   org_id    = harness_platform_organization.test.identifier
+   project_id    = harness_platform_project.test.identifier
    package_type = "DOCKER"
 
    config {
@@ -719,9 +705,8 @@ func testProjResourceUpstreamDockerAnonymousRegistry(id string, accId string) st
 			auth_type = "Anonymous"
 		}
    }
-   parent_ref = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
  }
-`, id, accId)
+`, id)
 }
 
 // Upstream Helm Registry --- Anonymous
@@ -795,11 +780,10 @@ func TestProjectResourceUpstreamHelmAnonymousRegistry(t *testing.T) {
 	})
 }
 
-func testAccResourceUpstreamHelmAnonymousRegistry(id string, accId string) string {
+func testAccResourceUpstreamHelmAnonymousRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s"
    package_type = "HELM"
 
    config {
@@ -811,12 +795,11 @@ func testAccResourceUpstreamHelmAnonymousRegistry(id string, accId string) strin
 			auth_type = "Anonymous"
 		}
    }
-   parent_ref = "%[2]s"
  }
-`, id, accId)
+`, id)
 }
 
-func testOrgResourceUpstreamHelmAnonymousRegistry(id string, accId string) string {
+func testOrgResourceUpstreamHelmAnonymousRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -825,7 +808,7 @@ func testOrgResourceUpstreamHelmAnonymousRegistry(id string, accId string) strin
 
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}"
+   org_id    = harness_platform_organization.test.identifier
    package_type = "HELM"
 
    config {
@@ -837,12 +820,11 @@ func testOrgResourceUpstreamHelmAnonymousRegistry(id string, accId string) strin
 			auth_type = "Anonymous"
 		}
    }
-   parent_ref = "%[2]s/${harness_platform_organization.test.identifier}"
  }
-`, id, accId)
+`, id)
 }
 
-func testProjResourceUpstreamHelmAnonymousRegistry(id string, accId string) string {
+func testProjResourceUpstreamHelmAnonymousRegistry(id string) string {
 	return fmt.Sprintf(`
  resource "harness_platform_organization" "test" {
   identifier = "%[1]s_org"
@@ -857,7 +839,8 @@ func testProjResourceUpstreamHelmAnonymousRegistry(id string, accId string) stri
  }
  resource "harness_platform_har_registry" "test" {
    identifier   = "%[1]s"
-   space_ref    = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
+   org_id    = harness_platform_organization.test.identifier
+   project_id    = harness_platform_project.test.identifier
    package_type = "HELM"
 
    config {
@@ -869,7 +852,6 @@ func testProjResourceUpstreamHelmAnonymousRegistry(id string, accId string) stri
 			auth_type = "Anonymous"
 		}
    }
-   parent_ref = "%[2]s/${harness_platform_organization.test.identifier}/${harness_platform_project.test.identifier}"
  }
-`, id, accId)
+`, id)
 }

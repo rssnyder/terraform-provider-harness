@@ -25,7 +25,9 @@ func ResourceRegistry() *schema.Resource {
 func resourceRegistryRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	c, ctx := meta.(*internal.Session).GetHarClientWithContext(ctx)
 
-	registryRef := d.Get("parent_ref").(string) + "/" + d.Get("identifier").(string)
+	registryRef := buildHARPathRef(d, c.AccountId)
+	registryRef += "/" + d.Get("identifier").(string)
+
 	resp, httpResp, err := c.RegistriesApi.GetRegistry(ctx, registryRef)
 
 	if err != nil {
@@ -46,12 +48,11 @@ func resourceRegistryCreateOrUpdate(ctx context.Context, d *schema.ResourceData,
 	var resp har.InlineResponse201
 	var httpResp *http.Response
 
-	registry := buildRegistry(d)
-	spaceRef := d.Get("space_ref").(string)
+	registry := buildRegistry(d, c.AccountId)
 
 	if d.Id() == "" {
 		resp, httpResp, err = c.RegistriesApi.CreateRegistry(ctx, &har.RegistriesApiCreateRegistryOpts{
-			Body: optional.NewInterface(registry), SpaceRef: optional.NewString(spaceRef),
+			Body: optional.NewInterface(registry), SpaceRef: optional.NewString(registry.ParentRef),
 		})
 	} else {
 		resp, httpResp, err = c.RegistriesApi.ModifyRegistry(ctx, d.Id(), &har.RegistriesApiModifyRegistryOpts{
@@ -70,7 +71,8 @@ func resourceRegistryCreateOrUpdate(ctx context.Context, d *schema.ResourceData,
 func resourceRegistryDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	c, ctx := meta.(*internal.Session).GetHarClientWithContext(ctx)
 
-	registryRef := d.Get("parent_ref").(string) + "/" + d.Get("identifier").(string)
+	registryRef := buildHARPathRef(d, c.AccountId)
+	registryRef += "/" + d.Get("identifier").(string)
 
 	_, httpResp, err := c.RegistriesApi.DeleteRegistry(ctx, registryRef)
 
@@ -81,7 +83,7 @@ func resourceRegistryDelete(ctx context.Context, d *schema.ResourceData, meta in
 	return nil
 }
 
-func buildRegistry(d *schema.ResourceData) *har.RegistryRequest {
+func buildRegistry(d *schema.ResourceData, accountID string) *har.RegistryRequest {
 	registry := &har.RegistryRequest{}
 
 	if attr, ok := d.GetOk("identifier"); ok {
@@ -92,9 +94,7 @@ func buildRegistry(d *schema.ResourceData) *har.RegistryRequest {
 		registry.Description = attr.(string)
 	}
 
-	if attr, ok := d.GetOk("parent_ref"); ok {
-		registry.ParentRef = attr.(string)
-	}
+	registry.ParentRef = buildHARPathRef(d, accountID)
 
 	if attr, ok := d.GetOk("package_type"); ok {
 		pt := har.PackageType(attr.(string))

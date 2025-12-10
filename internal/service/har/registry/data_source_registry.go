@@ -29,18 +29,19 @@ func dataSourceRegistryRead(ctx context.Context, d *schema.ResourceData, meta in
 	var resp har.InlineResponse201
 	var httpResp *http.Response
 
-	id := d.Get("identifier").(string)
-	registryRef := d.Get("space_ref").(string) + "/" + id
+	registryRef := buildHARPathRef(d, c.AccountId)
 
-	if id != "" && registryRef != "" {
-		resp, httpResp, err = c.RegistriesApi.GetRegistry(ctx, registryRef)
+	diag.Errorf(registryRef)
+
+	if attr, ok := d.GetOk("identifier"); ok {
+		resp, httpResp, err = c.RegistriesApi.GetRegistry(ctx, registryRef + "/" + attr.(string))
 		if err != nil {
 			return helpers.HandleReadApiError(err, d, httpResp)
 		}
 
 		registry = resp.Data
 	} else {
-		return diag.Errorf("Registry identifier and Space reference are required to read the registry.")
+		return diag.Errorf("Registry identifier is required to read the registry.")
 	}
 
 	if registry.Identifier == "" {
